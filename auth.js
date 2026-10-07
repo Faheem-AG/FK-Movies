@@ -22,6 +22,7 @@ const firebaseConfig = {
 // Initialize Firebase
 let firebaseApp = null;
 let auth = null;
+let db = null;
 let analytics = null;
 
 try {
@@ -32,6 +33,9 @@ try {
             firebaseApp = firebase.app();
         }
         auth = firebase.auth();
+        if (firebase.firestore) {
+            db = firebase.firestore();
+        }
         if (firebase.analytics) {
             analytics = firebase.analytics();
         }
@@ -316,6 +320,17 @@ function persistUser(user, customName = null) {
         provider: user.providerData && user.providerData[0] ? user.providerData[0].providerId : 'firebase'
     };
     localStorage.setItem('fk_user', JSON.stringify(userData));
+
+    // Save/update user profile in Cloud Firestore
+    if (db && user && user.uid) {
+        db.collection('users').doc(user.uid).set({
+            ...userData,
+            lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true }).catch(err => {
+            console.warn('Firestore user profile sync error:', err);
+        });
+    }
+
     return userData;
 }
 

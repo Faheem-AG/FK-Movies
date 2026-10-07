@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FK Movies — Discover, Explore & Stream</title>
+    <meta name="description" content="FK Movies — Your premium destination for discovering trending movies, top-rated films, and upcoming blockbusters. Powered by TMDB.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-content">
+            <div class="loader-logo">FK<span>Movies</span></div>
+            <div class="loader-bar"><div class="loader-progress"></div></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo" id="nav-logo-link">FK<span>Movies</span></a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#" class="nav-link active" data-section="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-section="trending">Trending</a></li>
+                <li><a href="#" class="nav-link" data-section="top-rated">Top Rated</a></li>
+                <li><a href="#" class="nav-link" data-section="upcoming">Upcoming</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div class="search-wrapper" id="search-wrapper">
+                    <button class="search-toggle" id="search-toggle" aria-label="Toggle search">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </button>
+                    <input type="text" class="search-input" id="search-input" placeholder="Search movies..." autocomplete="off">
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-backdrop" id="hero-backdrop"></div>
+        <div class="hero-gradient"></div>
+        <div class="hero-content" id="hero-content">
+            <div class="hero-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span id="hero-rating">0.0</span>
+            </div>
+            <h1 id="hero-title">Loading...</h1>
+            <p class="hero-overview" id="hero-overview"></p>
+            <div class="hero-meta" id="hero-meta">
+                <span class="hero-year" id="hero-year"></span>
+                <span class="hero-genre" id="hero-genre"></span>
+            </div>
+            <div class="hero-actions">
+                <button class="btn btn-primary" id="hero-trailer-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Watch Trailer
+                </button>
+                <button class="btn btn-secondary" id="hero-details-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    More Info
+                </button>
+            </div>
+        </div>
+        <div class="hero-slider-dots" id="hero-dots"></div>
+    </section>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Trending Section -->
+        <section class="movie-section" id="trending-section">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <h2 class="section-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        Trending Now
+                    </h2>
+                    <p class="section-subtitle">What everyone's watching this week</p>
+                </div>
+                <div class="section-controls">
+                    <button class="scroll-btn scroll-left" data-target="trending-row" aria-label="Scroll left">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button class="scroll-btn scroll-right" data-target="trending-row" aria-label="Scroll right">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="movie-row" id="trending-row"></div>
+        </section>
+
+        <!-- Now Playing Section -->
+        <section class="movie-section" id="now-playing-section">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <h2 class="section-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg>
+                        Now Playing
+                    </h2>
+                    <p class="section-subtitle">Currently in theaters near you</p>
+                </div>
+                <div class="section-controls">
+                    <button class="scroll-btn scroll-left" data-target="now-playing-row" aria-label="Scroll left">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button class="scroll-btn scroll-right" data-target="now-playing-row" aria-label="Scroll right">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="movie-row" id="now-playing-row"></div>
+        </section>
+
+        <!-- Top Rated Section -->
+        <section class="movie-section" id="top-rated-section">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <h2 class="section-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        Top Rated
+                    </h2>
+                    <p class="section-subtitle">Highest rated movies of all time</p>
+                </div>
+                <div class="section-controls">
+                    <button class="scroll-btn scroll-left" data-target="top-rated-row" aria-label="Scroll left">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button class="scroll-btn scroll-right" data-target="top-rated-row" aria-label="Scroll right">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="movie-row" id="top-rated-row"></div>
+        </section>
+
+        <!-- Upcoming Section -->
+        <section class="movie-section" id="upcoming-section">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <h2 class="section-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Coming Soon
+                    </h2>
+                    <p class="section-subtitle">Upcoming releases you won't want to miss</p>
+                </div>
+                <div class="section-controls">
+                    <button class="scroll-btn scroll-left" data-target="upcoming-row" aria-label="Scroll left">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button class="scroll-btn scroll-right" data-target="upcoming-row" aria-label="Scroll right">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="movie-row" id="upcoming-row"></div>
+        </section>
+
+        <!-- Search Results -->
+        <section class="movie-section search-results-section" id="search-results-section" style="display:none;">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <h2 class="section-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        Search Results
+                    </h2>
+                    <p class="section-subtitle" id="search-results-count"></p>
+                </div>
+            </div>
+            <div class="movie-grid" id="search-results-grid"></div>
+        </section>
+    </main>
+
+    <!-- Movie Detail Modal -->
+    <div class="modal-overlay" id="movie-modal">
+        <div class="modal" id="modal-content">
+            <button class="modal-close" id="modal-close" aria-label="Close modal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <div class="modal-backdrop" id="modal-backdrop"></div>
+            <div class="modal-body">
+                <div class="modal-poster-wrapper">
+                    <img class="modal-poster" id="modal-poster" alt="Movie poster" loading="lazy">
+                </div>
+                <div class="modal-info">
+                    <div class="modal-badges" id="modal-badges"></div>
+                    <h2 class="modal-title" id="modal-title"></h2>
+                    <div class="modal-meta" id="modal-meta"></div>
+                    <div class="modal-rating-bar" id="modal-rating-bar">
+                        <div class="rating-circle">
+                            <svg viewBox="0 0 36 36" class="rating-svg">
+                                <path class="rating-bg" d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                <path class="rating-fg" id="modal-rating-path" d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            </svg>
+                            <span class="rating-text" id="modal-rating-text">0</span>
+                        </div>
+                        <div class="rating-label">User Score</div>
+                    </div>
+                    <p class="modal-overview" id="modal-overview"></p>
+                    <div class="modal-details-grid" id="modal-details-grid"></div>
+                    <div class="modal-cast-section" id="modal-cast-section">
+                        <h3 class="modal-section-title">Top Cast</h3>
+                        <div class="modal-cast-row" id="modal-cast-row"></div>
+                    </div>
+                    <div class="modal-trailer-section" id="modal-trailer-section" style="display:none;">
+                        <h3 class="modal-section-title">Trailer</h3>
+                        <div class="trailer-container" id="trailer-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="#" class="footer-logo">FK<span>Movies</span></a>
+                    <p class="footer-desc">Your premium destination for discovering the latest and greatest in cinema. Powered by TMDB.</p>
+                </div>
+                <div class="footer-links-group">
+                    <div class="footer-col">
+                        <h4>Explore</h4>
+                        <a href="#" data-section="trending">Trending</a>
+                        <a href="#" data-section="top-rated">Top Rated</a>
+                        <a href="#" data-section="upcoming">Upcoming</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>About</h4>
+                        <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FK Movies. All rights reserved.</p>
+                <p class="footer-tmdb">Data provided by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+
+    <script src="app.js"></script>
+</body>
+</html>

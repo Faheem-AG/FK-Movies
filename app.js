@@ -549,6 +549,128 @@ function initModal() {
 }
 
 /* -------------------------------------------------------
+   Firebase Auth & User Navigation State
+   ------------------------------------------------------- */
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyByUplVqU-nud1kulPXZJAFbLZH5F3PpEg",
+    authDomain: "fkmovies-d0fb9.firebaseapp.com",
+    projectId: "fkmovies-d0fb9",
+    storageBucket: "fkmovies-d0fb9.firebasestorage.app",
+    messagingSenderId: "748434846339",
+    appId: "1:748434846339:web:46cd010b126e8eb6a1e1b6",
+    measurementId: "G-217EH4DKRP"
+};
+
+function initFirebaseAuth() {
+    let auth = null;
+    try {
+        if (typeof firebase !== 'undefined') {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(FIREBASE_CONFIG);
+            }
+            auth = firebase.auth();
+        }
+    } catch (e) {
+        console.warn('Firebase init in app.js:', e);
+    }
+
+    const signinBtn = document.getElementById('nav-signin-btn');
+    const userWrapper = document.getElementById('user-menu-wrapper');
+    const userProfileBtn = document.getElementById('user-profile-btn');
+    const navAvatar = document.getElementById('nav-user-avatar');
+    const navName = document.getElementById('nav-user-name');
+    const dropdownAvatar = document.getElementById('dropdown-avatar');
+    const dropdownName = document.getElementById('dropdown-name');
+    const dropdownEmail = document.getElementById('dropdown-email');
+    const signoutBtn = document.getElementById('nav-signout-btn');
+
+    function renderLoggedIn(userData) {
+        if (!signinBtn || !userWrapper) return;
+        signinBtn.style.display = 'none';
+        userWrapper.style.display = 'block';
+
+        const name = userData.name || userData.displayName || (userData.email ? userData.email.split('@')[0] : 'User');
+        const email = userData.email || '';
+        const initial = name.charAt(0).toUpperCase();
+
+        if (navName) navName.textContent = name;
+        if (dropdownName) dropdownName.textContent = name;
+        if (dropdownEmail) dropdownEmail.textContent = email;
+
+        if (userData.photoURL) {
+            if (navAvatar) navAvatar.innerHTML = `<img src="${userData.photoURL}" alt="${name}">`;
+            if (dropdownAvatar) dropdownAvatar.innerHTML = `<img src="${userData.photoURL}" alt="${name}">`;
+        } else {
+            if (navAvatar) navAvatar.textContent = initial;
+            if (dropdownAvatar) dropdownAvatar.textContent = initial;
+        }
+    }
+
+    function renderLoggedOut() {
+        if (!signinBtn || !userWrapper) return;
+        signinBtn.style.display = 'inline-flex';
+        userWrapper.style.display = 'none';
+        userWrapper.classList.remove('active');
+    }
+
+    // Check cached user in localStorage first for instant display
+    const cached = localStorage.getItem('fk_user');
+    if (cached) {
+        try {
+            renderLoggedIn(JSON.parse(cached));
+        } catch (e) {}
+    }
+
+    // Toggle dropdown
+    if (userProfileBtn && userWrapper) {
+        userProfileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userWrapper.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!userWrapper.contains(e.target)) {
+                userWrapper.classList.remove('active');
+            }
+        });
+    }
+
+    // Sign out button
+    if (signoutBtn) {
+        signoutBtn.addEventListener('click', async () => {
+            if (auth) {
+                try {
+                    await auth.signOut();
+                } catch (e) {
+                    console.error('Sign out error:', e);
+                }
+            }
+            localStorage.removeItem('fk_user');
+            renderLoggedOut();
+        });
+    }
+
+    // Firebase Auth State Listener
+    if (auth) {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                const userData = {
+                    uid: user.uid,
+                    email: user.email,
+                    name: user.displayName || (user.email ? user.email.split('@')[0] : 'User'),
+                    photoURL: user.photoURL || null
+                };
+                localStorage.setItem('fk_user', JSON.stringify(userData));
+                renderLoggedIn(userData);
+            } else {
+                localStorage.removeItem('fk_user');
+                renderLoggedOut();
+            }
+        });
+    }
+}
+
+/* -------------------------------------------------------
    Preloader
    ------------------------------------------------------- */
 function hidePreloader() {
@@ -567,6 +689,7 @@ async function init() {
     initSearch();
     initModal();
     initScrollControls();
+    initFirebaseAuth();
 
     // Load genres first
     await loadGenres();

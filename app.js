@@ -59,6 +59,150 @@ const filterState = {
 };
 
 /* -------------------------------------------------------
+   Streaming Website Providers & Search Integration
+   ------------------------------------------------------- */
+const STREAM_SERVERS = {
+    hdtoday: {
+        id: 'hdtoday',
+        name: 'HDToday',
+        icon: '⚡',
+        domain: 'hdtodayz.org',
+        tag: 'Fast',
+        getUrl: (title) => `https://hdtodayz.org/search?q=${encodeURIComponent(title || '')}`
+    },
+    hydrahd: {
+        id: 'hydrahd',
+        name: 'HydraHD',
+        icon: '🛡️',
+        domain: 'hydrahd.com',
+        tag: 'Full HD',
+        getUrl: (title) => `https://hydrahd.com/index.php?menu=search&query=${encodeURIComponent(title || '')}`
+    },
+    vidplay: {
+        id: 'vidplay',
+        name: 'VidPlay',
+        icon: '🎬',
+        domain: 'vidplay.to',
+        tag: 'Multi',
+        getUrl: (title) => `https://vidplay.to/search?q=${encodeURIComponent(title || '')}`
+    }
+};
+
+function getPreferredServer() {
+    try {
+        const saved = localStorage.getItem('fk_preferred_server');
+        return (saved && STREAM_SERVERS[saved]) ? saved : 'hdtoday';
+    } catch (e) {
+        return 'hdtoday';
+    }
+}
+
+function setPreferredServer(serverId, showToast = true) {
+    if (!STREAM_SERVERS[serverId]) return;
+    localStorage.setItem('fk_preferred_server', serverId);
+    updateServerUI();
+    if (showToast) {
+        showAppToast(`Streaming source set to ${STREAM_SERVERS[serverId].name} (${STREAM_SERVERS[serverId].domain})`, 'success');
+    }
+}
+
+function updateServerUI() {
+    const currentServerId = getPreferredServer();
+    const server = STREAM_SERVERS[currentServerId];
+    if (!server) return;
+
+    // Update Navbar button
+    const navServerIcon = document.getElementById('nav-server-icon');
+    const navServerName = document.getElementById('nav-server-name');
+    if (navServerIcon) navServerIcon.textContent = server.icon;
+    if (navServerName) navServerName.textContent = server.name;
+
+    // Update Navbar menu items active state
+    document.querySelectorAll('#nav-server-menu .server-menu-item').forEach(item => {
+        item.classList.toggle('active', item.getAttribute('data-server') === currentServerId);
+    });
+
+    // Update Hero watch button text
+    const heroBtnText = document.getElementById('hero-watch-btn-text');
+    if (heroBtnText) {
+        heroBtnText.textContent = `Watch on ${server.name}`;
+    }
+
+    // Update Hero dropdown items active state
+    document.querySelectorAll('#hero-server-dropdown .server-option').forEach(item => {
+        item.classList.toggle('active', item.getAttribute('data-server') === currentServerId);
+    });
+
+    // Update Modal stream cards active highlight
+    document.querySelectorAll('.stream-server-card').forEach(card => {
+        card.classList.toggle('active', card.getAttribute('data-server') === currentServerId);
+    });
+}
+
+function initStreamingServers() {
+    // Initial UI state setup
+    updateServerUI();
+
+    // 1. Navbar server dropdown toggling
+    const navServerWrapper = document.getElementById('nav-server-wrapper');
+    const navServerBtn = document.getElementById('nav-server-btn');
+    if (navServerBtn && navServerWrapper) {
+        navServerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navServerWrapper.classList.toggle('active');
+        });
+
+        document.querySelectorAll('#nav-server-menu .server-menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const serverId = item.getAttribute('data-server');
+                setPreferredServer(serverId);
+                navServerWrapper.classList.remove('active');
+            });
+        });
+    }
+
+    // 2. Hero server selector split dropdown toggling
+    const heroWatchGroup = document.getElementById('hero-watch-group');
+    const heroServerSelectBtn = document.getElementById('hero-server-select-btn');
+    if (heroServerSelectBtn && heroWatchGroup) {
+        heroServerSelectBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            heroWatchGroup.classList.toggle('active');
+        });
+
+        document.querySelectorAll('#hero-server-dropdown .server-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const serverId = option.getAttribute('data-server');
+                setPreferredServer(serverId);
+                heroWatchGroup.classList.remove('active');
+            });
+        });
+    }
+
+    // 3. Modal server cards click events
+    document.querySelectorAll('.stream-server-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const serverId = card.getAttribute('data-server');
+            if (serverId) {
+                setPreferredServer(serverId, false);
+            }
+        });
+    });
+
+    // Close all open server dropdowns on window click
+    document.addEventListener('click', (e) => {
+        if (navServerWrapper && !navServerWrapper.contains(e.target)) {
+            navServerWrapper.classList.remove('active');
+        }
+        if (heroWatchGroup && !heroWatchGroup.contains(e.target)) {
+            heroWatchGroup.classList.remove('active');
+        }
+    });
+}
+
+/* -------------------------------------------------------
    API Helpers
    ------------------------------------------------------- */
 async function tmdbFetch(endpoint, params = {}) {
@@ -708,6 +852,17 @@ function updateHero() {
         dot.classList.toggle('active', i === heroIndex);
     });
 
+    const heroWatchBtn = document.getElementById('hero-watch-btn');
+    if (heroWatchBtn) {
+        heroWatchBtn.onclick = () => {
+            const preferredServer = getPreferredServer();
+            const server = STREAM_SERVERS[preferredServer] || STREAM_SERVERS.hdtoday;
+            const movieTitle = movie.title || movie.name || '';
+            const streamUrl = server.getUrl(movieTitle);
+            window.open(streamUrl, '_blank', 'noopener,noreferrer');
+        };
+    }
+
     document.getElementById('hero-details-btn').onclick = () => openModal(movie.id);
     document.getElementById('hero-trailer-btn').onclick = () => openModal(movie.id, true);
 }
@@ -795,6 +950,22 @@ async function openModal(movieId, showTrailer = false) {
     if (pct >= 70) ratingPath.style.stroke = '#21d07a';
     else if (pct >= 50) ratingPath.style.stroke = '#d2d531';
     else ratingPath.style.stroke = '#db2360';
+
+    // Update streaming website links in modal
+    const movieTitle = details.title || details.name || '';
+    const hdtodayCard = document.getElementById('modal-server-hdtoday');
+    const hydrahdCard = document.getElementById('modal-server-hydrahd');
+    const vidplayCard = document.getElementById('modal-server-vidplay');
+
+    if (hdtodayCard) hdtodayCard.href = STREAM_SERVERS.hdtoday.getUrl(movieTitle);
+    if (hydrahdCard) hydrahdCard.href = STREAM_SERVERS.hydrahd.getUrl(movieTitle);
+    if (vidplayCard) vidplayCard.href = STREAM_SERVERS.vidplay.getUrl(movieTitle);
+
+    // Update active highlight based on preferred server
+    const currentServer = getPreferredServer();
+    document.querySelectorAll('.stream-server-card').forEach(card => {
+        card.classList.toggle('active', card.getAttribute('data-server') === currentServer);
+    });
 
     // Overview
     document.getElementById('modal-overview').textContent = details.overview || 'No overview available.';
@@ -1231,6 +1402,7 @@ async function init() {
     initWatchlistEvents();
     updateWatchlistBadges();
     initFirebaseAuth();
+    initStreamingServers();
 
     // Load genres first
     await loadGenres();

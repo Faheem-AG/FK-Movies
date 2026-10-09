@@ -38,6 +38,40 @@
                     </button>
                     <input type="text" class="search-input" id="search-input" placeholder="Search movies..." autocomplete="off">
                 </div>
+                <div class="nav-server-wrapper" id="nav-server-wrapper">
+                    <button class="nav-server-btn" id="nav-server-btn" aria-label="Select streaming website" title="Default Streaming Website">
+                        <span class="nav-server-icon" id="nav-server-icon">⚡</span>
+                        <span class="nav-server-name" id="nav-server-name">HDToday</span>
+                        <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="nav-server-menu" id="nav-server-menu">
+                        <div class="server-dropdown-title">Choose Streaming Website:</div>
+                        <button class="server-menu-item active" data-server="hdtoday">
+                            <span class="server-icon">⚡</span>
+                            <div class="server-meta">
+                                <span class="server-name">HDToday</span>
+                                <span class="server-domain">hdtodayz.org</span>
+                            </div>
+                            <span class="server-check">✓</span>
+                        </button>
+                        <button class="server-menu-item" data-server="hydrahd">
+                            <span class="server-icon">🛡️</span>
+                            <div class="server-meta">
+                                <span class="server-name">HydraHD</span>
+                                <span class="server-domain">hydrahd.com</span>
+                            </div>
+                            <span class="server-check">✓</span>
+                        </button>
+                        <button class="server-menu-item" data-server="vidplay">
+                            <span class="server-icon">🎬</span>
+                            <div class="server-meta">
+                                <span class="server-name">VidPlay</span>
+                                <span class="server-domain">vidplay.to</span>
+                            </div>
+                            <span class="server-check">✓</span>
+                        </button>
+                    </div>
+                </div>
                 <a href="auth.html" class="nav-signin-btn" id="nav-signin-btn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     Sign In
@@ -91,7 +125,43 @@
                 <span class="hero-genre" id="hero-genre"></span>
             </div>
             <div class="hero-actions">
-                <button class="btn btn-primary" id="hero-trailer-btn">
+                <div class="watch-btn-group" id="hero-watch-group">
+                    <button class="btn btn-primary hero-watch-btn" id="hero-watch-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        <span id="hero-watch-btn-text">Watch on HDToday</span>
+                    </button>
+                    <button class="watch-server-select-btn" id="hero-server-select-btn" aria-label="Select streaming server" title="Choose Streaming Website">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="watch-server-dropdown" id="hero-server-dropdown">
+                        <div class="server-dropdown-title">Select Watch Website:</div>
+                        <button class="server-option active" data-server="hdtoday">
+                            <span class="server-icon">⚡</span>
+                            <div class="server-meta">
+                                <span class="server-name">HDToday</span>
+                                <span class="server-domain">hdtodayz.org</span>
+                            </div>
+                            <span class="server-tag">Fast</span>
+                        </button>
+                        <button class="server-option" data-server="hydrahd">
+                            <span class="server-icon">🛡️</span>
+                            <div class="server-meta">
+                                <span class="server-name">HydraHD</span>
+                                <span class="server-domain">hydrahd.com</span>
+                            </div>
+                            <span class="server-tag">Full HD</span>
+                        </button>
+                        <button class="server-option" data-server="vidplay">
+                            <span class="server-icon">🎬</span>
+                            <div class="server-meta">
+                                <span class="server-name">VidPlay</span>
+                                <span class="server-domain">vidplay.to</span>
+                            </div>
+                            <span class="server-tag">Multi</span>
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" id="hero-trailer-btn">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     Watch Trailer
                 </button>
@@ -358,10 +428,62 @@
                                 <path class="rating-bg" d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831"/>
                                 <path class="rating-fg" id="modal-rating-path" d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831"/>
                             </svg>
-                            <span class="rating-text" id="modal-rating-text">0</span>
+                            <span class="rating-text" id="modal-rating-text">0%</span>
                         </div>
-                        <div class="rating-label">User Score</div>
+                        <span class="rating-label">User Score</span>
                     </div>
+
+                    <!-- Streaming Websites / Sources Selector -->
+                    <div class="modal-watch-panel" id="modal-watch-panel">
+                        <div class="watch-panel-header">
+                            <div class="watch-panel-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                <span>Watch Full Movie Online</span>
+                            </div>
+                            <span class="watch-panel-note">Select streaming website:</span>
+                        </div>
+                        <div class="stream-servers-grid">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="stream-server-card active" data-server="hdtoday" id="modal-server-hdtoday">
+                                <div class="server-card-top">
+                                    <span class="server-icon-badge">⚡</span>
+                                    <span class="server-status-pill">Fastest</span>
+                                </div>
+                                <div class="server-card-name">HDToday</div>
+                                <div class="server-card-domain">hdtodayz.org</div>
+                                <div class="server-card-btn">
+                                    <span>Stream Now</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </div>
+                            </a>
+
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="stream-server-card" data-server="hydrahd" id="modal-server-hydrahd">
+                                <div class="server-card-top">
+                                    <span class="server-icon-badge">🛡️</span>
+                                    <span class="server-status-pill">Full HD</span>
+                                </div>
+                                <div class="server-card-name">HydraHD</div>
+                                <div class="server-card-domain">hydrahd.com</div>
+                                <div class="server-card-btn">
+                                    <span>Stream Now</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </div>
+                            </a>
+
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="stream-server-card" data-server="vidplay" id="modal-server-vidplay">
+                                <div class="server-card-top">
+                                    <span class="server-icon-badge">🎬</span>
+                                    <span class="server-status-pill">Multi-Server</span>
+                                </div>
+                                <div class="server-card-name">VidPlay</div>
+                                <div class="server-card-domain">vidplay.to</div>
+                                <div class="server-card-btn">
+                                    <span>Stream Now</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
                     <p class="modal-overview" id="modal-overview"></p>
                     <div class="modal-details-grid" id="modal-details-grid"></div>
                     <div class="modal-cast-section" id="modal-cast-section">

@@ -464,6 +464,240 @@ img {
     color: #f87171;
 }
 
+/* --- Streaming Server Selector (Navbar) --- */
+.nav-server-wrapper {
+    position: relative;
+}
+.nav-server-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    color: var(--text-primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+.nav-server-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.nav-server-icon {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+.nav-server-btn .chevron-icon {
+    transition: transform var(--transition-fast);
+    opacity: 0.7;
+}
+.nav-server-wrapper.active .nav-server-btn .chevron-icon {
+    transform: rotate(180deg);
+}
+.nav-server-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 230px;
+    background: rgba(18, 18, 26, 0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(229, 9, 20, 0.12);
+    padding: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.nav-server-wrapper.active .nav-server-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.server-dropdown-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    padding: 6px 8px 8px;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 4px;
+}
+.server-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: left;
+    width: 100%;
+}
+.server-menu-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+}
+.server-menu-item.active {
+    background: rgba(229, 9, 20, 0.14);
+    border: 1px solid rgba(229, 9, 20, 0.3);
+    color: #fff;
+}
+.server-menu-item .server-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+.server-menu-item .server-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.server-menu-item .server-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.server-menu-item .server-domain {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+.server-menu-item.active .server-domain {
+    color: rgba(255, 255, 255, 0.7);
+}
+.server-menu-item .server-check {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0;
+}
+.server-menu-item.active .server-check {
+    opacity: 1;
+}
+
+/* --- Hero Watch Group & Split Dropdown --- */
+.watch-btn-group {
+    position: relative;
+    display: inline-flex;
+    align-items: stretch;
+}
+.hero-watch-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-right: 20px;
+}
+.watch-server-select-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    background: var(--accent);
+    color: #fff;
+    border-top-right-radius: var(--radius-full);
+    border-bottom-right-radius: var(--radius-full);
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-glow);
+}
+.watch-server-select-btn:hover {
+    background: var(--accent-hover);
+}
+.watch-btn-group.active .watch-server-select-btn svg {
+    transform: rotate(180deg);
+}
+.watch-server-select-btn svg {
+    transition: transform var(--transition-fast);
+}
+.watch-server-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 260px;
+    background: rgba(18, 18, 26, 0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(229, 9, 20, 0.15);
+    padding: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.watch-btn-group.active .watch-server-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.server-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: left;
+    width: 100%;
+}
+.server-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+.server-option.active {
+    background: rgba(229, 9, 20, 0.15);
+    border-color: rgba(229, 9, 20, 0.4);
+}
+.server-option .server-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+.server-option .server-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.server-option .server-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+.server-option .server-domain {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+.server-option .server-tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+.server-option.active .server-tag {
+    background: var(--accent);
+    color: #fff;
+}
+
 /* Hamburger */
 .hamburger {
     display: none;
@@ -1402,6 +1636,145 @@ img {
     font-weight: 500;
 }
 
+/* --- Modal Streaming Websites Panel --- */
+.modal-watch-panel {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(229, 9, 20, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+.watch-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.watch-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+.watch-panel-title svg {
+    color: var(--accent);
+}
+.watch-panel-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+.stream-servers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+.stream-server-card {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px;
+    background: rgba(18, 18, 26, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+.stream-server-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(229, 9, 20, 0.15) 0%, transparent 80%);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+.stream-server-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(229, 9, 20, 0.4);
+    box-shadow: 0 8px 24px rgba(229, 9, 20, 0.2);
+}
+.stream-server-card:hover::before {
+    opacity: 1;
+}
+.stream-server-card.active {
+    border-color: var(--accent);
+    background: rgba(229, 9, 20, 0.08);
+}
+.server-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+}
+.server-icon-badge {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+.server-status-pill {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+.stream-server-card:hover .server-status-pill,
+.stream-server-card.active .server-status-pill {
+    background: rgba(229, 9, 20, 0.2);
+    color: var(--accent);
+}
+.server-card-name {
+    font-family: var(--font-display);
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+    position: relative;
+    z-index: 1;
+}
+.server-card-domain {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+}
+.server-card-btn {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+    position: relative;
+    z-index: 1;
+}
+.stream-server-card:hover .server-card-btn {
+    background: var(--gradient-accent);
+    color: #fff;
+}
+.stream-server-card.active .server-card-btn {
+    background: var(--accent);
+    color: #fff;
+}
+
 .modal-overview {
     font-size: 0.95rem;
     color: var(--text-secondary);
@@ -1780,6 +2153,20 @@ img {
     }
     .hero-actions {
         flex-direction: column;
+    }
+    .watch-btn-group {
+        width: 100%;
+    }
+    .hero-watch-btn {
+        flex: 1;
+        justify-content: center;
+    }
+    .watch-server-dropdown {
+        width: 100%;
+    }
+    .stream-servers-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
     }
     .btn {
         width: 100%;
